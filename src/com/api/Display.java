@@ -1,14 +1,53 @@
 package com.api;
 
-// TODO: Displays can be:
-// 1. Monochrome and color
-// 2. LCD and LED
-// 3. TV, computer, and portable device
+public class Display {
 
-// Can you apply the Bridge pattern here?
-public interface Display {
+    private Picture picture;
+    private Technology technology;
+    private Application application;
 
-    void turnOn();
+    private Display() {
 
-    void turnOff();
+    }
+
+    public void turnOn() {
+        technology.turnOn();
+        application.configure();
+        picture.draw();
+    }
+
+    public void turnOff() {
+        application.tearDown();
+        technology.turnOff();
+    }
+
+    public static class Builder {
+
+        private Picture picture;
+        private Technology technology;
+        private Application application;
+
+        public Builder setPicture(Picture picture) {
+            this.picture = picture;
+            return this;
+        }
+
+        public Builder setTechnology(Technology technology) {
+            this.technology = technology;
+            return this;
+        }
+
+        public Builder setApplication(Application application) {
+            this.application = application;
+            return this;
+        }
+
+        public Display build() {
+            Display display = new Display();
+            display.picture = this.picture;
+            display.technology = this.technology;
+            display.application = this.application;
+            return display;
+        }
+    }
 }
